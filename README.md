@@ -2,8 +2,8 @@
 ## Data
 Search data in link: https://www.physionet.org/cgi-bin/atm/ATM
 ![link](/imageforReadme/datasearch.png)
-Select "MIT-BIH Arrhythmia Database (mitdb)" in "Input: Database" block
-The link to the dataset is on the right side of the blue bar:
+Select "MIT-BIH Arrhythmia Database (mitdb)" in "Input: Database" block. \
+The link to the dataset is on the right side of the blue bar under the search block:
 ![datapagelink](/imageforReadme/downloaddatalink.png)
 If you have "wget", you can download data by type 
 ```
