@@ -9,4 +9,6 @@ If you have "wget", you can download data by type
 ```
 wget -r -np http://www.physionet.org/physiobank/database/mitdb/
 ```
-in terminal.
+in terminal. \
+Run rddata.m file in matlab, referance to https://github.com/Aiwiscal/ECG-ML-DL-Algorithm-Matlab.
+
