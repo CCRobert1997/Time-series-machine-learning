@@ -11,4 +11,9 @@ wget -r -np http://www.physionet.org/physiobank/database/mitdb/
 ```
 in terminal. \
 Run rddata.m file in matlab, referance to https://github.com/Aiwiscal/ECG-ML-DL-Algorithm-Matlab.
+Type 
+```
+plot(TIME, M(:,1));grid on;xlabel('Time / s'); ylabel('Voltage / mV');
+```
+in matlab command line to show the image of the first channel of the selected sample. \
 
