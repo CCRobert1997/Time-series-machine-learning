@@ -10,10 +10,11 @@ If you have "wget", you can download data by type
 wget -r -np http://www.physionet.org/physiobank/database/mitdb/
 ```
 in terminal. \
-Run rddata.m file in matlab, referance to https://github.com/Aiwiscal/ECG-ML-DL-Algorithm-Matlab.
-Type 
+Reminder: Delete the 102-0.atr file in the mitdb dataset for prevent from program failure
+Type
 ```
-plot(TIME, M(:,1));grid on;xlabel('Time / s'); ylabel('Voltage / mV');
+python /Users/chen/Desktop/Time-series-machine-learning/onedimensionCGAN.py /path/to/mitdb
 ```
-in matlab command line to show the image of the first channel of the selected sample. \
+to run the CGAN for ECG data. \
+The generated ecg would be in /cgansamplesingle.
 
