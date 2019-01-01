@@ -14,6 +14,7 @@ SCALEDSAMPLES = 50
 
 ECG = mitecg.ReadMitEcg('/Users/chen/Desktop/ecg/www.physionet.org/physiobank/database/mitdb', 10000, [1, 2, 3, 4, 5], False, SCALEDSAMPLES = SCALEDSAMPLES)
 
+
 sampleArray = ECG.oneEcgWithHeartBeatScaled()
 
 x=np.linspace(0,1,sampleArray.size)

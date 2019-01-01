@@ -15,8 +15,8 @@ args = parser.parse_args()
 
 
 
-batch_size = 250
-HEARTBEATSAMPLES = 50
+batch_size = 40
+HEARTBEATSAMPLES = 100
 LABEL = 5
 z_dim = 100
 ECG = mitecg.ReadMitEcg(args.datapath, 10000, [1, 2, 3, 4, 5], True, SCALEDSAMPLES = HEARTBEATSAMPLES)
@@ -67,19 +67,18 @@ def generator(z, label, is_training=is_training):
         d = 3
         z = tf.concat([z, label], axis=1)
         
-        h0 = tf.layers.dense(z, 500, tf.nn.relu)
+        h0 = tf.layers.dense(z, 20, tf.nn.relu)
         h0 = tf.nn.relu(tf.contrib.layers.batch_norm(h0, is_training=is_training, decay=momentum))
         
-        h1 = tf.layers.dense(h0, 500, tf.nn.relu)
+        h1 = tf.layers.dense(h0, 50, tf.nn.relu)
         h1 = tf.nn.relu(tf.contrib.layers.batch_norm(h1, is_training=is_training, decay=momentum))
         
-        h2 = tf.layers.dense(h1, 500, tf.nn.relu)
-        h2 = tf.nn.relu(tf.contrib.layers.batch_norm(h1, is_training=is_training, decay=momentum))
         
-        h3 = tf.layers.dense(h2, HEARTBEATSAMPLES, tf.nn.tanh, name='g')
+        
+        h2 = tf.layers.dense(h1, HEARTBEATSAMPLES, tf.nn.tanh, name='g')
 
-        h3 = tf.reshape(h3, shape=[-1, HEARTBEATSAMPLES, 1])
-        return h3
+        h2 = tf.reshape(h2, shape=[-1, HEARTBEATSAMPLES, 1])
+        return h2
 
 #loss function
 g = generator(noise, y_noise)
@@ -118,7 +117,7 @@ samples = []
 loss = {'d': [], 'g': []}
 typeName = ["Normal beat", "Left bundle branch block beat", "Right bundle branch block beat", "Aberrated atrial premature beat", "Premature ventricular contraction"]
 
-for i in range(2000):
+for i in range(5000):
     
     batch_xs, batch_ys = ECG.nextbatch(batch_size)
     batch_xs = np.reshape(batch_xs, (-1, HEARTBEATSAMPLES, 1))
@@ -142,11 +141,13 @@ for i in range(2000):
     if (i%100 == 0):
         z_samples = np.random.uniform(-1.0, 1.0, [batch_size, z_dim]).astype(np.float32)
         y_samples = np.zeros([batch_size, LABEL])
-        for i in range(LABEL):
+        for k in range(LABEL):
             for j in range(LABEL):
-                if (batch_size > i * LABEL + j):
-                    y_samples[i * LABEL + j, j] = 1
+                if (batch_size > k * LABEL + j):
+                    y_samples[k * LABEL + j, j] = 1
         gen_heart = sess.run(g, feed_dict={noise: z_samples, y_noise: y_samples, is_training: False})
+        print(gen_heart)
+        print(gen_heart.shape)
         plt.figure()
         plt.subplot(511)
         plt.plot((gen_heart[0,:,:]).flatten())
