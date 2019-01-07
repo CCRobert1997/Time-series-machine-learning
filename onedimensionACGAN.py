@@ -16,7 +16,7 @@ args = parser.parse_args()
 
 
 batch_size = 40
-HEARTBEATSAMPLES = 100
+HEARTBEATSAMPLES = 250
 LABEL = 5
 z_dim = 100
 LAMBDA = 10
@@ -87,8 +87,13 @@ loss_d_fake = tf.reduce_mean(d_fake)
 loss_cls_real = tf.losses.mean_squared_error(y_noise, y_real)
 loss_cls_fake = tf.losses.mean_squared_error(y_noise, y_fake)
 
-loss_d = loss_d_real + loss_d_fake + loss_cls_real
+loss_d = tf.abs(loss_d_real + loss_d_fake + loss_cls_real)
 loss_g = -tf.reduce_mean(d_fake) + loss_cls_fake
+
+
+
+
+
 
 
 
@@ -100,8 +105,8 @@ vars_d = [var for var in tf.trainable_variables() if var.name.startswith('discri
 #optimization function
 update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 with tf.control_dependencies(update_ops):
-    optimizer_d = tf.train.RMSPropOptimizer(0.001, 0.9).minimize(loss_d, var_list=vars_d)
-    optimizer_g = tf.train.RMSPropOptimizer(0.001, 0.9).minimize(loss_g, var_list=vars_g)
+    optimizer_d = tf.train.RMSPropOptimizer(0.0001, 0.9).minimize(loss_d, var_list=vars_d)
+    optimizer_g = tf.train.RMSPropOptimizer(0.0001, 0.9).minimize(loss_g, var_list=vars_g)
 
 saver = tf.train.Saver()
 
@@ -140,7 +145,7 @@ for i in range(5000):
     print(i, d_ls, g_ls)
     #print(y_samples)
     
-    if (i%100 == 0):
+    if (i%10 == 0):
         z_samples = np.random.uniform(-1.0, 1.0, [batch_size, z_dim]).astype(np.float32)
         y_samples = np.zeros([batch_size, LABEL])
         for k in range(batch_size):
