@@ -13,8 +13,13 @@ in terminal. \
 Reminder: Delete the 102-0.atr file in the mitdb dataset for prevent from program failure. \
 Type
 ```
-python /Users/chen/Desktop/Time-series-machine-learning/onedimensionCGAN.py /path/to/mitdb
+python onedimensionCGAN.py /path/to/mitdb
 ```
 to run the CGAN for ECG data. \
 The generated ecg would be in /cgansamplesingle.
 
+Type 
+```
+python 8samplefor0vs3test.py
+```
+would show the result of PCCA with a tiny train data set.
